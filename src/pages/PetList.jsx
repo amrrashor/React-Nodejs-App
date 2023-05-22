@@ -4,25 +4,38 @@ import axios from 'axios'
 
 function PetList() {
     const [pets, setPets] = useState([])
+    const [loading, setloading] = useState(true);
+    const [error, setError] = useState(false);
 
-    const getPets = async () => {
-        try {
-            /* FETCH */
-            // const response = await fetch('http://localhost:3000/pets')
-            // const data = await response.json()
-            // if (response.status === 200) setPets(data)
 
-            /* AXIOS */
-            const response = await axios.get('http://localhost:3000/pets')
-            if (response.status === 200) setPets(response.data)
-            
-        } catch (error) {
-            console.error('error', error)
+    useEffect(() => {
+        const getPets = async () => {
+            try {
+                const response = await axios.get('https://jsonplaceholder.typicode.com/todos');
+                if (response.status === 200) {
+                    setPets(response.data);
+                    setloading(false);
+                } else {
+                    setError(true)
+                }
+            } catch (error) {
+                setError(true);
+                console.log(error)
+            }
         }
-    }
-  
-    useEffect(() => { getPets() }, [])
 
+
+        getPets()
+    }, [])
+
+
+    if (loading) {
+        <p>...loading</p>
+    } 
+
+    if (error) {
+        <p>Error handling the request</p>
+    }
     return (
         <>
             <h2>Pet List</h2>
@@ -30,7 +43,7 @@ function PetList() {
             {pets?.map((pet) => {
                 return (
                     <div key={pet?.id}>
-                        <p>{pet?.name} - {pet?.type} - {pet?.breed}</p>
+                        <p>{pet?.title} - {pet?.type} - {pet?.breed}</p>
 
                         <Link to={`/${pet?.id}`}>
                             <button>Pet detail</button>
