@@ -2,12 +2,13 @@ import { useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 const PetList = lazy(() => import('./pages/PetList'))
-// const PetDetail = lazy(() => import('./pages/PetDetail'));
-// const EditPet = lazy(() => import('./pages/EditPet'));
-// const AddPet = lazy(() => import('./pages/AddPet'));
+const PetDetail = lazy(() => import('./pages/PetDetail'));
+const EditPet = lazy(() => import('./pages/EditPet'));
+const AddPet = lazy(() => import('./pages/addPet'))
 
 function App() {
   const [petToEdit, setPetToEdit] = useState(null);
+
   return (
     <div>
       <Router>
@@ -22,20 +23,20 @@ function App() {
             element={<Suspense fallback={<></>}><PetList /></Suspense>}
           />
 
-          {/* <Route
+          <Route
             path='/:petId'
             element={<Suspense fallback={<></>}><PetDetail /></Suspense>}
           />
 
           <Route
-            path='/petId/edit'
+            path='/:petId/edit'
             element={<Suspense fallback={<></>}><EditPet /></Suspense>}
           />
 
           <Route
             path='/add'
             element={<Suspense fallback={<></>}><AddPet /></Suspense>}
-          /> */}
+          /> 
         </Routes>
       </Router>
     </div>
